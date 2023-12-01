@@ -26,6 +26,7 @@ private:
     Ui::MainWindow *ui;
     QTimer *timer;
     int runTime;
+    int unPressTime;
 
 };
 #endif // MAINWINDOW_H

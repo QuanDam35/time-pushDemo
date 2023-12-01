@@ -11,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->progressBar->setMaximum(MAXPROGRESS);
     timer = new QTimer(this);
     runTime = 0;
+    unPressTime = 0;
     ui->Time->setText(QString::number(runTime));
     connect(timer,SIGNAL(timeout()),this,SLOT(updateTime()));
     connect(ui->pushButton,SIGNAL(pressed()),this,SLOT(pushButtonPressed()));
@@ -26,6 +27,12 @@ MainWindow::~MainWindow()
 
 void MainWindow::updateTime(){
     ui->Time->setText(QString::number(runTime++));
+    if(!ui->pushButton->isDown()){
+        ++unPressTime;
+    }
+    if(unPressTime >= MAXUNPRESSTIME){
+        ui->Output->setText("NO REGISTER");
+    }
 }
 
 
@@ -33,6 +40,7 @@ void MainWindow::pushButtonPressed()
 {
     int v;
     while(ui->pushButton->isDown()){
+        unPressTime = 0;
         v = ui->progressBar->value()+1;
         ui->progressBar->setValue(v);
         QCoreApplication::processEvents();
